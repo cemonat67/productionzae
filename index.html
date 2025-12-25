@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <title>Yönlendiriliyor…</title>
+  <script>
+    (function() {
+      var httpIndex = 'http://127.0.0.1:8081/index.html';
+      var relativeIndex = 'dist/site/index.html';
+      if (location.protocol === 'file:') {
+        try {
+          window.location.href = httpIndex;
+        } catch (e) {
+          window.location.href = relativeIndex;
+        }
+      } else {
+        window.location.replace(relativeIndex);
+      }
+    })();
+  </script>
+</head>
+<body>
+  <p>Yönlendiriliyor… Eğer otomatik yönlenmezse <a href="http://127.0.0.1:8081/index.html">buraya tıklayın</a>.</p>
+</body>
+</html>

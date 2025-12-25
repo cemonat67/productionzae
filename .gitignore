@@ -6,6 +6,9 @@ node_modules/
 
 # Local backups and snapshots
 dist/site/_snapshots/
+dist/site/data/_snapshots/
+dist/site/data/*_BACKUP_*.json
+dist/site/data/*BROKEN*.json
 ops/n8n/backups/
 ops/n8n/_snapshots_*/
 
