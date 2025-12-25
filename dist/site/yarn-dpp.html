@@ -1237,6 +1237,16 @@ body.modal-open{overflow:hidden}
 @media (max-width:768px){.roleModal{width:95vw;max-height:85vh}}
 </style>
 
+<style>
+.productModalBackdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(2px);z-index:11000}
+.productModal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:min(900px,92vw);max-height:85vh;overflow:auto;background:#fff;border-radius:12px;box-shadow:0 24px 48px rgba(0,0,0,.25);border:1px solid var(--border);z-index:11001;padding:0}
+.productModal[hidden],.productModalBackdrop[hidden]{display:none}
+.productModalHeader{padding:16px 20px;background:var(--secondary);color:#fff;display:flex;justify-content:space-between;align-items:center}
+.productModalTitle{font-weight:700;font-size:1.1rem}
+.productModalClose{position:absolute;top:12px;right:12px;border:none;background:transparent;color:#fff;font-size:1.25rem;cursor:pointer}
+.productModalBody{padding:20px;background:#f8f9fa}
+</style>
+
     <link rel="stylesheet" href="assets/css/theme.css">
 </head>
 <body>
@@ -2135,13 +2145,15 @@ async function __ZERO_LOAD_YARNS(){
         });
         const uniqueNames = Object.keys(nameCounts).sort((a,b) => a.localeCompare(b));
         uniqueNames.forEach(name => {
+            const match = yarnsInCategory.find(y => y.name === name) || {};
             const li = document.createElement('li');
             li.className = 'category-item';
             li.dataset.category = category;
             li.dataset.yarn = name;
+            li.dataset.action = 'open-product-modal';
+            li.dataset.yarnId = (match.id || name.replace(/\s+/g, '-'));
             li.innerHTML = `${name} <span class="category-count">${nameCounts[name]}</span>`;
             li.addEventListener('click', () => {
-                filterByCategory(category, name);
                 setActiveItem(li);
             });
             list.appendChild(li);
@@ -2173,7 +2185,7 @@ async function __ZERO_LOAD_YARNS(){
  return;
  }
  
- yarns.forEach(yarn => {
+  yarns.forEach(yarn => {
         const card = document.createElement('div');
         let statusClass = '';
         let statusBadge = '';
@@ -2189,6 +2201,8 @@ async function __ZERO_LOAD_YARNS(){
         }
 
         card.className = 'yarn-card' + (yarn.type === 'Blend' ? ' blend' : '') + statusClass;
+        const yarnId = (yarn.id || yarn.name.replace(/\s+/g, '-'));
+        card.setAttribute('data-yarn-id', yarnId);
         
         card.innerHTML = `
         <div class="yarn-header">
@@ -2235,7 +2249,7 @@ async function __ZERO_LOAD_YARNS(){
         </div>
       `;
  
-      yarnGrid.appendChild(card);
+        yarnGrid.appendChild(card);
  
        // Add event listener to details button
        const detailsBtn = card.querySelector('.detail-btn');
@@ -4254,6 +4268,56 @@ if (typeof init === 'function') {
   backdrop.addEventListener('click', closeRole);
   if (closeBtn) closeBtn.addEventListener('click', closeRole);
   document.addEventListener('keydown', function(e){ if(e.key === 'Escape'){ closeRole(); }});
+})();
+</script>
+<div id="productModalBackdrop" class="productModalBackdrop" hidden></div>
+<div id="productModal" class="productModal" role="dialog" aria-modal="true" aria-labelledby="productModalTitle" hidden>
+  <button id="productModalClose" class="productModalClose" aria-label="Close">✕</button>
+  <div class="productModalHeader">
+    <div id="productModalTitle" class="productModalTitle">Product</div>
+  </div>
+  <div id="productModalBody" class="productModalBody"></div>
+</div>
+<script>
+(function(){
+  const pBackdrop = document.getElementById('productModalBackdrop');
+  const pModal = document.getElementById('productModal');
+  const pClose = document.getElementById('productModalClose');
+  const pTitle = document.getElementById('productModalTitle');
+  const pBody = document.getElementById('productModalBody');
+
+  function openProductById(yarnId){
+    let card = document.querySelector(`.yarn-card[data-yarn-id="${CSS.escape(yarnId)}"]`);
+    if(!card){
+      const titleSel = Array.from(document.querySelectorAll('.yarn-card .card-title-bar')).find(el => (el.textContent||'').trim().replace(/\s+/g,'-') === yarnId);
+      if(titleSel) card = titleSel.closest('.yarn-card');
+    }
+    if(!card) return;
+    const nameEl = card.querySelector('.card-title-bar');
+    pTitle.textContent = nameEl ? nameEl.textContent.trim() : 'Product';
+    pBody.innerHTML = '';
+    const clone = card.cloneNode(true);
+    clone.style.boxShadow = 'none';
+    clone.style.border = '1px solid var(--border)';
+    pBody.appendChild(clone);
+    pBackdrop.hidden = false;
+    pModal.hidden = false;
+    document.body.classList.add('modal-open');
+  }
+  function closeProduct(){
+    pBackdrop.hidden = true;
+    pModal.hidden = true;
+    document.body.classList.remove('modal-open');
+  }
+  document.addEventListener('click', function(e){
+    const t = e.target.closest('[data-action="open-product-modal"]');
+    if(!t) return;
+    const yarnId = t.getAttribute('data-yarn-id') || (t.getAttribute('data-yarn')||'').replace(/\s+/g,'-');
+    openProductById(yarnId);
+  });
+  pBackdrop.addEventListener('click', closeProduct);
+  if(pClose) pClose.addEventListener('click', closeProduct);
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape'){ closeProduct(); }});
 })();
 </script>
 </body>
