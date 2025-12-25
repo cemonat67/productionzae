@@ -103,8 +103,6 @@
     </style>
     
     <!-- Scripts -->
-    <script src="js/self-heal.js"></script>
-    <script src="js/audit-log.js"></script>
     <script src="js/config.js"></script>
     <script src="js/governance-engine.js"></script>
 
@@ -363,13 +361,35 @@ body {
  border-color: var(--secondary);
  }
  
- .yarn-header {
- background: white;
- color: var(--text);
- padding: 20px;
- position: relative;
- border-bottom: 1px solid var(--border);
- }
+    .yarn-header {
+        background: white;
+        color: var(--text);
+        padding: 20px;
+        position: relative;
+        border-bottom: 1px solid var(--border);
+    }
+    .card-title-bar {
+        width: 100%;
+        background: var(--primary);
+        color: #fff;
+        padding: 10px 12px;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 6px;
+        margin-bottom: 12px;
+    }
+    .ml-ready-badge {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: rgba(2, 21, 78, 0.08);
+        color: var(--secondary);
+        border: 1px solid rgba(2,21,78,0.15);
+        padding: 4px 10px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        border-radius: 999px;
+    }
  
  .yarn-type {
  position: absolute;
@@ -1057,7 +1077,24 @@ body {
         align-items: center;
         max-width: 1600px;
         margin: 0 auto;
+        gap: 20px;
     }
+    
+    /* CHANGE START: ML-Ready pill brand colors */
+    .ml-ready-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--danger);
+        color: #fff;
+        border: 1px solid rgba(213,22,53,0.35);
+        padding: 6px 12px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        border-radius: 999px;
+        white-space: nowrap;
+    }
+    /* CHANGE END */
     
     .title {
         font-size: 1.5rem;
@@ -1102,17 +1139,20 @@ body {
         border: 1px solid #ffcdd2;
     }
     
+    /* CHANGE START: HERO badge brand colors (green/white) */
     .status-badge.hero {
-        background: #e8f5e9;
-        color: #2e7d32;
-        border: 1px solid #c8e6c9;
+        background: var(--primary) !important;
+        color: #ffffff !important;
+        border: 1px solid rgba(0,85,48,0.35) !important;
     }
     
+    /* CHANGE START: TRANSFORM badge brand colors (orange/white) */
     .status-badge.transform {
-        background: #fff3e0;
-        color: #ef6c00;
-        border: 1px solid #ffe0b2;
+        background: var(--accent) !important;
+        color: #ffffff !important;
+        border: 1px solid rgba(249,186,0,0.35) !important;
     }
+    /* CHANGE END */
     
     /* KILL SWITCH STYLES */
     .yarn-card.status-exit {
@@ -1162,6 +1202,19 @@ body {
     }
 </style>
 
+<style>
+.roleModalBackdrop{position:fixed;inset:0;background:rgba(0,0,0,.35);backdrop-filter:blur(2px);z-index:10000}
+.roleModal[hidden],.roleModalBackdrop[hidden]{display:none}
+.roleModal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:min(720px,92vw);max-height:80vh;overflow:auto;background:#fff;border-radius:12px;box-shadow:0 24px 48px rgba(0,0,0,.25);border:1px solid var(--border);z-index:10001;padding:0}
+.roleModalHeader{padding:16px 20px;background:var(--secondary);color:#fff;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.roleModalTitle{font-weight:700;font-size:1.1rem}
+.roleModalMeta{font-size:.9rem;opacity:.9;text-align:right}
+.roleModalClose{position:absolute;top:12px;right:12px;border:none;background:transparent;color:#fff;font-size:1.25rem;cursor:pointer}
+.roleModalBody{padding:20px;background:#f8f9fa}
+.roleView{cursor:pointer}
+body.modal-open{overflow:hidden}
+@media (max-width:768px){.roleModal{width:95vw;max-height:85vh}}
+</style>
 
     <link rel="stylesheet" href="assets/css/theme.css">
 </head>
@@ -1178,6 +1231,7 @@ body {
                 <img src="assets/img/plogo.svg" alt="Zero Logo" style="height: 80px; margin-right: 15px;">
                 <div class="title">Uğurlular Tekstil <span class="title-at">Ecosystem</span> — Yarn DPP by Zero<span class="title-at">@</span>Ecosystem</div>
             </a>
+            <span class="ml-ready-pill"><i class="fas fa-microchip"></i> ML-Ready</span>
             <img src="assets/img/ulogo.svg" alt="U Logo" style="height: 80px;">
         </div>
     </div>
@@ -1244,9 +1298,9 @@ body {
  <span class="close-btn" id="closeModal">&times;</span>
         <h2 class="dpp-subtitle" id="modalYarnName"></h2>
         <div class="intent-cards">
- <div class="intent-card" data-intent="overview"><h3>CEO View</h3><p>Strategy, risk & compliance snapshot</p></div>
- <div class="intent-card" data-intent="cost"><h3>CFO View</h3><p>Cost, CO₂ impact & savings</p></div>
- <div class="intent-card" data-intent="flow"><h3>CTO View</h3><p>Process flow & operations</p></div>
+ <div class="intent-card roleView" data-action="open-role-modal" data-role="ceo" data-intent="overview"><h3>CEO View</h3><p>Strategy, risk & compliance snapshot</p></div>
+ <div class="intent-card roleView" data-action="open-role-modal" data-role="cfo" data-intent="cost"><h3>CFO View</h3><p>Cost, CO₂ impact & savings</p></div>
+ <div class="intent-card roleView" data-action="open-role-modal" data-role="cto" data-intent="flow"><h3>CTO View</h3><p>Process flow & operations</p></div>
 </div>
 <div class="modal-section">
     <!-- NEW: Tabs for detailed view -->
@@ -1562,7 +1616,7 @@ body {
                 
                 <!-- DEMO MODE TOGGLE -->
                 <div class="demo-mode-control" style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.9rem; background: #fff; padding: 5px 12px; border-radius: 20px; border: 1px solid #ddd; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-                    <span style="font-weight: 600; color: #555; font-size: 0.85rem;">Demo Mode:</span>
+                    <span style="font-weight: 600; color: #555; font-size: 0.85rem;">Presentation Mode:</span>
                     <label class="switch" style="position: relative; display: inline-block; width: 36px; height: 20px; margin: 0;">
                         <input type="checkbox" id="demoModeToggle" onchange="toggleDemoMode(this)">
                         <span class="slider round" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px;"></span>
@@ -1713,9 +1767,9 @@ body {
  <div class="blend-section" id="blend-calculator" style="display: none;">
  <h2 class="dpp-subtitle">Create Your Custom Yarn Blend</h2>
 <div class="intent-cards">
- <div class="intent-card" data-intent="overview"><h3>CEO View</h3><p>Strategy, risk & compliance snapshot</p></div>
- <div class="intent-card" data-intent="cost"><h3>CFO View</h3><p>Cost, CO₂ impact & savings</p></div>
- <div class="intent-card" data-intent="flow"><h3>CTO View</h3><p>Process flow & operations</p></div>
+ <div class="intent-card roleView" data-action="open-role-modal" data-role="ceo" data-intent="overview"><h3>CEO View</h3><p>Strategy, risk & compliance snapshot</p></div>
+ <div class="intent-card roleView" data-action="open-role-modal" data-role="cfo" data-intent="cost"><h3>CFO View</h3><p>Cost, CO₂ impact & savings</p></div>
+ <div class="intent-card roleView" data-action="open-role-modal" data-role="cto" data-intent="flow"><h3>CTO View</h3><p>Process flow & operations</p></div>
 </div>
  <div class="blend-container">
  <div class="blend-form">
@@ -2049,8 +2103,7 @@ async function __ZERO_LOAD_YARNS(){
                   li.className = 'category-item';
                   li.dataset.category = category;
                   li.dataset.yarn = yarn.name;
-                  // Removed CO2/kg display as per user request
-                  li.innerHTML = `${yarn.name} <span style="font-size:0.8em; color:#666;">(${yarn.yarn_count})</span>`;
+                  li.textContent = yarn.name;
                   li.addEventListener('click', () => {
                       filterByCategory(category, yarn.name);
                       setActiveItem(li);
@@ -2104,14 +2157,15 @@ async function __ZERO_LOAD_YARNS(){
         card.innerHTML = `
         <div class="yarn-header">
           ${statusBadge}
+          <div class="card-title-bar">${yarn.name}</div>
           ${yarn.type === 'Blend' ? '<i class="fas fa-layer-group blend-icon"></i>' : ''}<div class="yarn-type">${yarn.type}</div>
  <div class="intent-cards">
- <div class="intent-card" data-intent="overview"><h3>CEO View</h3><p>Strategy, risk & compliance snapshot</p></div>
- <div class="intent-card" data-intent="cost"><h3>CFO View</h3><p>Cost, CO₂ impact & savings</p></div>
- <div class="intent-card" data-intent="flow"><h3>CTO View</h3><p>Process flow & operations</p></div>
+ <div class="intent-card roleView" data-action="open-role-modal" data-role="ceo" data-intent="overview"><h3>CEO View</h3><p>Strategy, risk & compliance snapshot</p></div>
+ <div class="intent-card roleView" data-action="open-role-modal" data-role="cfo" data-intent="cost"><h3>CFO View</h3><p>Cost, CO₂ impact & savings</p></div>
+ <div class="intent-card roleView" data-action="open-role-modal" data-role="cto" data-intent="flow"><h3>CTO View</h3><p>Process flow & operations</p></div>
 </div>
  <p class="yarn-brand">Brand: ${yarn.brand}</p>
- </div>
+        </div>
  <div class="yarn-body">
  <p class="yarn-composition">${yarn.composition}</p>
  <div class="metrics">
@@ -2136,7 +2190,7 @@ async function __ZERO_LOAD_YARNS(){
             if (badge.includes('Synthetic')) badgeClass = 'synthetic';
             return `<span class="badge ${badgeClass}">${badge}</span>`;
           }).join('')}
-        </div><h2 class="dpp-subtitle">${yarn.name}</h2>
+        </div>
 
       </div>
       <div class="yarn-footer">
@@ -4034,6 +4088,125 @@ if (typeof init === 'function') {
 } else {
     console.error("Critical: init() function not found. Application cannot start.");
 }
+</script>
+<!-- Global Role Modal -->
+<div id="roleModalBackdrop" class="roleModalBackdrop" hidden></div>
+<div id="roleModal" class="roleModal" role="dialog" aria-modal="true" aria-labelledby="roleModalTitle" hidden>
+  <button id="roleModalClose" class="roleModalClose" aria-label="Close">✕</button>
+  <div class="roleModalHeader">
+    <div id="roleModalTitle" class="roleModalTitle">Title</div>
+    <div id="roleModalMeta" class="roleModalMeta">Meta</div>
+  </div>
+<div id="roleModalBody" class="roleModalBody"></div>
+</div>
+<script>
+(function(){
+  const backdrop = document.getElementById('roleModalBackdrop');
+  const modal = document.getElementById('roleModal');
+  const closeBtn = document.getElementById('roleModalClose');
+  const titleEl = document.getElementById('roleModalTitle');
+  const metaEl = document.getElementById('roleModalMeta');
+  const bodyEl = document.getElementById('roleModalBody');
+
+  function openRole(role, ctx){
+    const roleTitle = role.toUpperCase() + ' View';
+    titleEl.textContent = ctx.name ? roleTitle + ' — ' + ctx.name : roleTitle;
+    const meta = [ctx.brand ? ctx.brand : null, ctx.co2 ? ('CO₂/kg: ' + ctx.co2) : null, ctx.score ? ('DPI: ' + ctx.score) : null].filter(Boolean).join(' • ');
+    metaEl.textContent = meta || '';
+    bodyEl.innerHTML = buildRoleContent(role, ctx);
+    backdrop.hidden = false;
+    modal.hidden = false;
+    document.body.classList.add('modal-open');
+  }
+  function closeRole(){
+    backdrop.hidden = true;
+    modal.hidden = true;
+    document.body.classList.remove('modal-open');
+  }
+  function buildRoleContent(role, ctx){
+    const tagsLine = (ctx.tags && ctx.tags.length) ? `<div style="margin-top:12px; font-size:.9rem; color:#555;">Tags: ${ctx.tags.join(', ')}</div>` : '';
+    if(role === 'ceo'){
+      return `
+        <div>
+          <div style="font-weight:600; margin-bottom:8px;">Risk & Compliance</div>
+          <ul style="margin-left:18px;">
+            <li>ESPR alignment and DPP data completeness</li>
+            <li>CBAM readiness and carbon data verification</li>
+            <li>Supply chain integrity and certification status</li>
+          </ul>
+          <div style="margin-top:12px; font-size:.95rem;">SCO/CRO: Strategic compliance overview prepared</div>
+          ${tagsLine}
+        </div>
+      `;
+    }
+    if(role === 'cfo'){
+      return `
+        <div>
+          <div style="font-weight:600; margin-bottom:8px;">Cost & Impact</div>
+          <div>CO₂/kg: ${ctx.co2 || 'N/A'}</div>
+          <div>DPI score: ${ctx.score || 'N/A'}</div>
+          <div style="margin-top:8px;">Shadow cost and margin signal under review.</div>
+          <div style="margin-top:8px;">Potential CO₂ savings through mix optimization.</div>
+          ${tagsLine}
+        </div>
+      `;
+    }
+    if(role === 'cto'){
+      return `
+        <div>
+          <div style="font-weight:600; margin-bottom:8px;">Process Readiness</div>
+          <ul style="margin-left:18px;">
+            <li>Traceability chain validated to Tier 4</li>
+            <li>Data integrity checks passed for key fields</li>
+            <li>Operations readiness confirmed for production</li>
+          </ul>
+          ${tagsLine}
+        </div>
+      `;
+    }
+    return '';
+  }
+  function extractContext(el){
+    const card = el.closest('.yarn-card');
+    const ctx = {};
+    if(card){
+      const nameEl = card.querySelector('.card-title-bar');
+      ctx.name = nameEl ? nameEl.textContent.trim() : undefined;
+      const brandEl = card.querySelector('.yarn-brand');
+      const brandText = brandEl ? brandEl.textContent.trim() : '';
+      ctx.brand = brandText.replace(/^\s*Brand:\s*/i,'').trim() || undefined;
+      const co2El = card.querySelector('.metric-value.co2-value');
+      ctx.co2 = co2El ? co2El.textContent.trim() : undefined;
+      const scoreEl = card.querySelector('.metric-value.score-value');
+      ctx.score = scoreEl ? scoreEl.textContent.trim() : undefined;
+      ctx.tags = Array.from(card.querySelectorAll('.badge')).map(b => b.textContent.trim());
+      return ctx;
+    }
+    if (window.selectedYarn) {
+      const y = window.selectedYarn;
+      ctx.name = y.name; ctx.brand = y.brand; ctx.co2 = y.co2; ctx.score = y.score; ctx.tags = y.badges || y.tags || [];
+      return ctx;
+    }
+    ctx.name = (document.getElementById('modalYarnName') && document.getElementById('modalYarnName').textContent.trim()) || undefined;
+    ctx.brand = (document.getElementById('modalBrand') && document.getElementById('modalBrand').textContent.trim()) || undefined;
+    ctx.co2 = (document.getElementById('modalCo2') && document.getElementById('modalCo2').textContent.trim()) || undefined;
+    ctx.score = (document.getElementById('modalScore') && document.getElementById('modalScore').textContent.trim()) || undefined;
+    ctx.tags = Array.from(document.querySelectorAll('#modalBadges .badge')).map(b => b.textContent.trim());
+    return ctx;
+  }
+
+  document.addEventListener('click', function(e){
+    const target = e.target.closest('[data-action="open-role-modal"]');
+    if(!target) return;
+    const role = target.getAttribute('data-role') || 'ceo';
+    const ctx = extractContext(target);
+    openRole(role, ctx);
+  });
+
+  backdrop.addEventListener('click', closeRole);
+  if (closeBtn) closeBtn.addEventListener('click', closeRole);
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape'){ closeRole(); }});
+})();
 </script>
 </body>
 </html>

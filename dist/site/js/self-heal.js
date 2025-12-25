@@ -196,7 +196,7 @@ const ZeroSelfHeal = (function() {
         
         const isDemo = sessionStorage.getItem('zero_demo_mode') === 'ON';
         const demoColor = isDemo ? '#27ae60' : '#bdc3c7';
-        const demoText = isDemo ? 'DEMO: ON' : 'DEMO: OFF';
+        const demoText = isDemo ? 'Presentation: ON' : 'Presentation: OFF';
         const demoTextColor = isDemo ? '#fff' : '#555';
 
         buildInfo.innerHTML = `
