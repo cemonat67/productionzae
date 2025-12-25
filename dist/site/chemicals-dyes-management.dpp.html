@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Zero@Production — Chemicals & Dye DPP</title>
+    <link rel="stylesheet" href="assets/css/theme.css" />
+    <link rel="stylesheet" href="assets/css/zae-theme.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script defer src="assets/js/main.min.js"></script>
+    <!-- <script defer src="assets/js/inject-backlink.js"></script> -->
+    <!-- <script defer src="assets/js/agent.js"></script> -->
+    <!-- <script defer src="assets/js/agent-ui.js"></script> -->
+    <!-- <script defer src="assets/js/trend.js"></script> -->
+    <!-- <script defer src="assets/js/filterbar.js"></script> -->
+    <!-- <script type="module" defer src="assets/js/module-chemicals.js"></script> -->
+  </head>
+  <body>
+    <div class="zero-color-bar"></div>
+    <header class="app-header">
+    <div class="header-content">
+        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+            <a href="index.html" style="text-decoration: none; display: flex; align-items: center;">
+                <img src="assets/img/plogo.svg" alt="Zero Logo" style="height: 80px; margin-right: 15px;">
+                <div class="title">Uğurlular Tekstil <span class="title-at">Ecosystem</span> — Chemicals & Dye DPP by Zero<span class="title-at">@</span>Ecosystem</div>
+            </a>
+            <img src="assets/img/ulogo.svg" alt="U Logo" style="height: 80px;">
+        </div>
+    </div>
+</header>
+    <main class="container">
+      <div class="card" style="margin-bottom: 24px;">
+        <div class="row" style="justify-content: space-between; align-items: center;">
+          <div>
+            <h3>Kimyasallar & Boyalar — Toplam CO₂ ve Maliyet</h3>
+            <p class="muted">Zaman aralığına göre süreç (Process) metrikleri</p>
+          </div>
+          <div class="row" style="gap:8px; align-items:center;">
+            <label for="chemicalsTimeframe" class="muted">Aralık:</label>
+            <select id="chemicalsTimeframe" class="btn" style="background: rgba(255,255,255,0.1); min-width:120px;"></select>
+            <span id="chemicalsActiveFilter" class="muted" style="margin-left:16px;">Filtre: —</span>
+            <button id="chemicalsClearFilter" class="btn" style="margin-left:8px;">Filtreyi Temizle</button>
+          </div>
+        </div>
+        <div class="row" style="gap:32px; align-items:flex-start;">
+          <div class="card" style="min-width:260px;">
+            <h3 id="chemicalsTotalCo2">—</h3>
+            <p class="muted">Toplam CO₂</p>
+          </div>
+          <div class="card" style="min-width:260px;">
+            <h3 id="chemicalsTotalCost">—</h3>
+            <p class="muted">Tahmini Maliyet (K)</p>
+          </div>
+        </div>
+      </div>
+
+      <section class="card" style="margin-bottom: 24px;">
+        <h3>Trend</h3>
+        <div id="chemicalsTrendSummary" class="muted skeleton skeleton-text">—</div>
+        <div id="chemicalsTrendCostSummary" class="muted skeleton skeleton-text">—</div>
+      </section>
+
+      <section class="card" style="margin-bottom: 24px;">
+        <h3>Kimyasallar/Boyalar CO₂ (Modüller)</h3>
+        <canvas id="chemicalsChart" height="120"></canvas>
+      </section>
+
+      <section class="card">
+        <h3>Kimyasallar & Boyalar Modül Tablosu</h3>
+        <p class="muted">CO₂ ve maliyet (K) — zaman aralığına göre ölçekli</p>
+        <table class="table-hover" style="width:100%; border-collapse: collapse;">
+          <thead>
+            <tr>
+              <th style="text-align:left; padding:8px;">Modül</th>
+              <th style="text-align:left; padding:8px;">Alan</th>
+              <th style="text-align:left; padding:8px;">CO₂</th>
+              <th style="text-align:left; padding:8px;">Maliyet</th>
+              <th style="text-align:left; padding:8px;">Durum</th>
+            </tr>
+          </thead>
+          <tbody id="chemicalsTbody"></tbody>
+        </table>
+      </section>
+    </main>
+  </body>
+ </html>

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "UG-001",
+    "name": "Cotton Ring Yarn",
+    "category": "Cotton Yarns",
+    "brand": "Ugurlular Tekstil",
+    "composition": "Cotton 100%",
+    "yarn_count": "Ne 30/1",
+    "co2": 2.15,
+    "score": 82,
+    "badges": ["OEKO-TEX"],
+    "type": "Natural"
+  },
+  {
+    "id": "UG-002",
+    "name": "Recycled Cotton PES Blend Yarn",
+    "category": "Blended Yarns",
+    "brand": "Ugurlular Tekstil",
+    "composition": "Cotton 70% / Recycled Polyester 30%",
+    "yarn_count": "Ne 20/1",
+    "co2": 1.78,
+    "score": 85,
+    "badges": ["GRS", "OEKO-TEX", "Recycled"],
+    "type": "Blend"
+  },
+  {
+    "id": "UG-003",
+    "name": "Organic Cotton Yarn",
+    "category": "Sustainable Yarns",
+    "brand": "Ugurlular Tekstil",
+    "composition": "Organic Cotton 100%",
+    "yarn_count": "Ne 24/1",
+    "co2": 1.95,
+    "score": 88,
+    "badges": ["GOTS", "Organic"],
+    "type": "Natural"
+  }
+]
