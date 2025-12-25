@@ -2097,20 +2097,21 @@ async function __ZERO_LOAD_YARNS(){
          });
          list.appendChild(allCatItem);
  
-        // 2. Add individual yarns with counts
+        // 2. Add individual yarns (unique names) with counts
         const nameCounts = {};
         yarnsInCategory.forEach(y => {
-            const key = y.name;
-            nameCounts[key] = (nameCounts[key] || 0) + 1;
+            const k = y.name;
+            nameCounts[k] = (nameCounts[k] || 0) + 1;
         });
-        yarnsInCategory.forEach(yarn => {
+        const uniqueNames = Object.keys(nameCounts).sort((a,b) => a.localeCompare(b));
+        uniqueNames.forEach(name => {
             const li = document.createElement('li');
             li.className = 'category-item';
             li.dataset.category = category;
-            li.dataset.yarn = yarn.name;
-            li.innerHTML = `${yarn.name} <span class="category-count">${nameCounts[yarn.name] || 1}</span>`;
+            li.dataset.yarn = name;
+            li.innerHTML = `${name} <span class="category-count">${nameCounts[name]}</span>`;
             li.addEventListener('click', () => {
-                filterByCategory(category, yarn.name);
+                filterByCategory(category, name);
                 setActiveItem(li);
             });
             list.appendChild(li);
