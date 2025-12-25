@@ -1238,8 +1238,8 @@ body.modal-open{overflow:hidden}
 </style>
 
 <style>
-.productModalBackdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(2px);z-index:11000}
-.productModal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:min(900px,92vw);max-height:85vh;overflow:auto;background:#fff;border-radius:12px;box-shadow:0 24px 48px rgba(0,0,0,.25);border:1px solid var(--border);z-index:11001;padding:0}
+.productModalBackdrop{position:fixed;inset:0;background:rgba(2,21,78,0.18);backdrop-filter:blur(6px);z-index:9500}
+.productModal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:min(1024px,94vw);max-height:88vh;overflow:auto;background:#fff;border-radius:12px;box-shadow:0 24px 48px rgba(0,0,0,.25);border:1px solid var(--border);z-index:9501;padding:0}
 .productModal[hidden],.productModalBackdrop[hidden]{display:none}
 .productModalHeader{padding:16px 20px;background:var(--secondary);color:#fff;display:flex;justify-content:space-between;align-items:center}
 .productModalTitle{font-weight:700;font-size:1.1rem}
@@ -4285,6 +4285,17 @@ if (typeof init === 'function') {
   const pClose = document.getElementById('productModalClose');
   const pTitle = document.getElementById('productModalTitle');
   const pBody = document.getElementById('productModalBody');
+  const roleModal = document.getElementById('roleModal');
+  // Helper: find yarn object by id/slug or name
+  function findYarn(yarnId){
+    const slug = (s) => String(s||'').trim().replace(/\s+/g,'-');
+    if (Array.isArray(window.yarnDatabase)) {
+      let y = window.yarnDatabase.find(it => it.id === yarnId);
+      if (!y) y = window.yarnDatabase.find(it => slug(it.name) === yarnId);
+      return y || null;
+    }
+    return null;
+  }
 
   function openProductById(yarnId){
     let card = document.querySelector(`.yarn-card[data-yarn-id="${CSS.escape(yarnId)}"]`);
@@ -4315,9 +4326,28 @@ if (typeof init === 'function') {
     const yarnId = t.getAttribute('data-yarn-id') || (t.getAttribute('data-yarn')||'').replace(/\s+/g,'-');
     openProductById(yarnId);
   });
+  // Delegation: Details button anywhere (grid or product modal)
+  document.addEventListener('click', function(e){
+    const d = e.target.closest('[data-action="open-details"], .detail-btn');
+    if(!d) return;
+    const yarnId = d.getAttribute('data-id') ||
+      (d.closest('.yarn-card') && (d.closest('.yarn-card').getAttribute('data-yarn-id') || (d.closest('.yarn-card').querySelector('.card-title-bar')||{}).textContent?.trim()?.replace(/\s+/g,'-')));
+    const yarn = findYarn(yarnId);
+    if (yarn && typeof window.showYarnDetails === 'function') {
+      window.showYarnDetails(yarn);
+    }
+  });
   pBackdrop.addEventListener('click', closeProduct);
   if(pClose) pClose.addEventListener('click', closeProduct);
-  document.addEventListener('keydown', function(e){ if(e.key === 'Escape'){ closeProduct(); }});
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape'){
+      if (roleModal && roleModal.hidden === false) {
+        // Let role modal handle its own close; do not close product beneath it
+        return;
+      }
+      closeProduct();
+    }
+  });
 })();
 </script>
 </body>
